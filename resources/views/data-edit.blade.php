@@ -14,6 +14,7 @@
         <div class="col-lg-10 mx-auto">
             <div class="card mt-5">
                 <div class="card-header text-center">
+                    <button class="btn btn-danger float-left" onclick="history.go(-1)">Kembali</button>
                     <h2>Edit Mahasiswa</h2>
                 </div>
                 <div class="card-body">
@@ -29,8 +30,8 @@
                         </div>
                     @endif
 
-                    @foreach ($dataMhs as $item)
-                    <form action="{{ route('data.update', $item['nim']) }}" method="POST">
+                    @if ($dataMhs)
+                    <form action="{{ route('data.update', $dataMhs['id']) }}" method="POST">
                         {{ csrf_field() }}
                         {{ method_field('PUT') }}
                       
@@ -38,19 +39,19 @@
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
                                     <strong>Nama:</strong>
-                                    <input type="text" value="{{ $item['nama'] }}" name="nama" class="form-control" placeholder="Nama">
+                                    <input type="text" value="{{ $dataMhs['nama'] }}" name="nama" class="form-control" placeholder="Nama">
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
                                     <strong>Nim:</strong>
-                                    <input type="number" value="{{ $item['nim'] }}" class="form-control" name="nim" placeholder="Nim">
+                                    <input type="number" value="{{ $dataMhs['nim'] }}" class="form-control" disabled>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
                                     <strong>Kelas:</strong>
-                                    <input type="text" value="{{ $item['kelas'] }}" class="form-control" name="kelas" placeholder="Kelas">
+                                    <input type="text" value="{{ $dataMhs['kelas'] }}" class="form-control" name="kelas" placeholder="Kelas">
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12 text-center">
@@ -58,7 +59,9 @@
                             </div>
                         </div>
                     </form>
-                    @endforeach
+                    @else
+                        <p>Data tidak jelas, tidak dapat mengedit data</p>
+                    @endif
 
                 </div>
             </div>

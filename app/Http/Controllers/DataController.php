@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Mahasiswa;
 
 class DataController extends Controller
 {
@@ -13,19 +14,11 @@ class DataController extends Controller
      */
     public function index(Request $request)
     {
-        $dataMhs = [
-            ['nim' => '17090001', 'nama' => 'Siswa 1', 'kelas' => '6A'],
-            ['nim' => '17090002', 'nama' => 'Siswa 2', 'kelas' => '6B'],
-            ['nim' => '17090003', 'nama' => 'Siswa 3', 'kelas' => '6C'],
-            ['nim' => '17090004', 'nama' => 'Siswa 4', 'kelas' => '6D'],
-        ];
+        $dataMhs = Mahasiswa::All();
 
         if($request->query('kelas')){
-            $dataMhs = array_filter($dataMhs, function($kelas){
-                return $kelas['kelas'] == request()->kelas;
-            });
+            $dataMhs = Mahasiswa::where('kelas', request()->kelas)->get();
         }
-
         return view('data', compact('dataMhs'));
     }
 
@@ -47,6 +40,18 @@ class DataController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'nama' => 'required|max:50',
+            'nim' => 'required|max:8|min:8|unique:mahasiswas',
+            'kelas' => 'required|max:2|min:2',
+        ]);
+        Mahasiswa::create([
+            'nama' => $request->input('nama'),
+            'nim' => $request->input('nim'),
+            'kelas' => $request->input('kelas'),
+            'role_id' => '1'
+        ]);
+        
         return redirect()->route('data.index')->with('message', 'Data anda telah diinputkan!');
     }
 
@@ -56,21 +61,9 @@ class DataController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($nim)
+    public function show($id)
     {
-        $dataMhs = [
-            ['nim' => '17090001', 'nama' => 'Siswa 1', 'kelas' => '6A'],
-            ['nim' => '17090002', 'nama' => 'Siswa 2', 'kelas' => '6B'],
-            ['nim' => '17090003', 'nama' => 'Siswa 3', 'kelas' => '6C'],
-            ['nim' => '17090004', 'nama' => 'Siswa 4', 'kelas' => '6D'],
-        ];
-
-        if($nim){
-            $dataMhs = array_filter($dataMhs, function($nim){
-                return $nim['nim'] == request()->segment(count(request()->segments()));
-            });
-        }
-
+        $dataMhs = Mahasiswa::find($id);
         return view('data-detail', compact('dataMhs'));
     }
 
@@ -80,19 +73,9 @@ class DataController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($nim)
+    public function edit($id)
     {
-        $dataMhs = [
-            ['nim' => '17090001', 'nama' => 'Siswa 1', 'kelas' => '6A'],
-            ['nim' => '17090002', 'nama' => 'Siswa 2', 'kelas' => '6B'],
-            ['nim' => '17090003', 'nama' => 'Siswa 3', 'kelas' => '6C'],
-            ['nim' => '17090004', 'nama' => 'Siswa 4', 'kelas' => '6D'],
-        ];
-
-        $dataMhs = array_filter($dataMhs, function($nim){
-            return $nim['nim'] == request()->segment(count(request()->segments())-1);
-        });
-
+        $dataMhs = Mahasiswa::find($id);
         return view('data-edit',compact('dataMhs'));
     }
 
@@ -105,6 +88,12 @@ class DataController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validasi = $request->validate([
+            'nama' => 'required|max:50',
+            'kelas' => 'required|max:2|min:2',
+        ]);
+
+        Mahasiswa::whereId($id)->update($validasi);
         return redirect()->route('data.index')->with('message', 'Data anda telah diupdate!');
     }
 
@@ -116,6 +105,8 @@ class DataController extends Controller
      */
     public function destroy($id)
     {
+        $mahasiswas = Mahasiswa::findOrFail($id);
+        $mahasiswas->delete();
         return redirect()->route('data.index')->with('message', 'Data anda telah dihapus!');
     }
 }

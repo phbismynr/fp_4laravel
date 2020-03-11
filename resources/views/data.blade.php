@@ -52,6 +52,7 @@
                                 <th>Nim</th>
                                 <th>Nama</th>
                                 <th>Kelas</th>
+                                <th>Role</th>
                                 <th width="30%">Opsi</th>
                             </tr>
                         </thead>
@@ -61,10 +62,11 @@
                                 <td>{{ $dmhs['nim'] }} </td>
                                 <td>{{ $dmhs['nama'] }} </td>
                                 <td>{{ $dmhs['kelas'] }} </td>
+                                <td>{{ $dmhs['role_id'] }}</td>
                                 <td>
-                                    <form action="{{ route('data.destroy',$dmhs['nim']) }}" method="POST">
-                                        <a href="{{ route('data.show',$dmhs['nim']) }}" class="btn btn-secondary">Detail</a>
-                                        <a href="{{ route('data.edit',$dmhs['nim']) }}" class="btn btn-warning">Edit</a>
+                                    <form action="{{ route('data.destroy',$dmhs['id']) }}" method="POST">
+                                        <a href="{{ route('data.show',$dmhs['id']) }}" class="btn btn-secondary">Detail</a>
+                                        <a href="{{ route('data.edit',$dmhs['id']) }}" class="btn btn-warning">Edit</a>
                                         
                                         {{ csrf_field() }}
                                         {{ method_field('DELETE') }}

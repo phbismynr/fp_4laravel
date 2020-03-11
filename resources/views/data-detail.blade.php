@@ -14,32 +14,32 @@
         <div class="col-lg-10 mx-auto">
             <div class="card mt-5">
                 <div class="card-header text-center">
+                  <button class="btn btn-danger float-left" onclick="history.go(-1)">Kembali</button>
                     <h2>Detail Mahasiswa</h2>
                 </div>
                 <div class="card-body">
                     
                     <table class="table">
-                        @forelse ($dataMhs as $d)
+                        @if ($dataMhs)
                           <tr>
                             <th style="border:0">Nama</th>
                             <td style="border:0">:</td>
-                            <td style="border:0">{{ $d['nama'] }}</td>
+                            <td style="border:0">{{ $dataMhs['nama'] }}</td>
                           </tr>
                           <tr>
                             <th style="border:0">Nim</th>
                             <td style="border:0">:</td>
-                            <td style="border:0">{{ $d['nim'] }}</td>
+                            <td style="border:0">{{ $dataMhs['nim'] }}</td>
                           </tr>
                           <tr>
                             <th style="border:0">Kelas</th>
                             <td style="border:0">:</td>
-                            <td style="border:0">{{ $d['kelas'] }}</td>
+                            <td style="border:0">{{ $dataMhs['kelas'] }}</td>
                           </tr>
-                        @empty
+                        @else
                             <td colspan="3">Tidak dapat menampilkan detail data</td>
-                        @endforelse
+                        @endif
                       </table>
-
                 </div>
             </div>
         </div>

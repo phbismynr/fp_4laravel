@@ -14,6 +14,7 @@
         <div class="col-lg-10 mx-auto">
             <div class="card mt-5">
                 <div class="card-header text-center">
+                    <button class="btn btn-danger float-left" onclick="history.go(-1)">Kembali</button>
                     <h2>Tambah Mahasiswa</h2>
                 </div>
                 <div class="card-body">
